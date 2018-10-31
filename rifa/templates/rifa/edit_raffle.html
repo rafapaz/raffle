@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<br>
+{{ msg }}
+<h1>Nova postagem</h1>
+<form action="{% url 'create_raffle' %}" method="POST" class="post-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="w3-button">Save</button>
+</form>
+
+
+{% endblock %}

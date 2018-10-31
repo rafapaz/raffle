@@ -10,6 +10,9 @@ class Category(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     desc = models.CharField(max_length=400, blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Raffle(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -22,6 +25,9 @@ class Raffle(models.Model):
     choosed_num = models.IntegerField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Choice(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -29,16 +35,25 @@ class Choice(models.Model):
     raffle = models.ForeignKey(Raffle, on_delete=models.CASCADE, related_name='choices')
     date = models.DateTimeField('choose date')
 
+    def __str__(self):
+        return self.user.username + ' / ' + self.raffle.title
+
 
 class Image(models.Model):
     img = models.ImageField(upload_to=raffle_directory_path)
     raffle = models.ForeignKey(Raffle, on_delete=models.CASCADE, related_name='images')
     main = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.img + ' / ' + self.raffle.title
+
 
 class Reputation(models.Model):
-    SCORES = [(i,i) for i in range(1,6)]
+    SCORES = [(i, i) for i in range(1, 6)]
     user_from = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='+')
     user_to = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='+')
     score = models.IntegerField(blank=False, null=False, choices=SCORES)
     comment = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.user_from.username + ' -> ' + self.user_to.username
