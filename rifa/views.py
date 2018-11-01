@@ -1,6 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from .forms import RaffleForm
 from .models import Raffle, Choice
 import datetime
@@ -13,32 +11,6 @@ def index(request):
     raffles = Raffle.objects.all()
     # perc = {r.id: r.choices.count()/r.qtd_num for r in raffles}
     return render(request, 'rifa/index.html', {'raffles': raffles})
-
-
-def my_login(request):
-    try:
-        email = request.POST.get('email')
-        psw = request.POST.get('psw')
-
-        if email is None and psw is None:
-            return render(request, 'login.html')
-
-        username = User.objects.get(email=email.lower()).username
-        user = authenticate(username=username, password=psw)
-
-        if user is None:
-            raise Exception('Shit!')
-
-        login(request, user) 
-        return redirect('index')
-    except:
-        context = {'message': 'Email or password not valid'}
-        return render(request, 'login.html', context)
-
-
-def my_logout(request):
-    logout(request)
-    return redirect('login')
 
 
 def raffle_new(request):

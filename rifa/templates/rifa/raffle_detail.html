@@ -9,6 +9,7 @@
 <br>
 {{ raffle.category.name }} <br>
 {{ raffle.desc }} <br>
+Criado por <a href="{% url 'profile' raffle.author.id %}">{{ raffle.author.first_name }}</a> <br>
 
 Escolha um número:
 {% for i in range %}
