@@ -5,6 +5,9 @@
 {% block content %}
 
 Home!!
-<a href="{% url 'create_raffle' %}" >Nova Rifa</a>
+<a href="{% url 'raffle_new' %}" >Nova Rifa</a> <br><br>
+{% for r in raffles %}
+<a href="{% url 'raffle_detail' r.id %}" > {{ r.title }} </a>  -  <a href="{% url 'raffle_edit' r.id %}" >Editar</a> <br>
+{% endfor %}
 
 {% endblock %}

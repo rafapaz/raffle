@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<br>
+{{ msg }}
+<h1>Rifa {{ raffle.title }}</h1>
+<br>
+{{ raffle.category.name }} <br>
+{{ raffle.desc }} <br>
+
+Escolha um número:
+{% for i in range %}
+    {% if forloop.first %}<div class="w3-row">{% endif %}
+    <div class="w3-col m1">
+            <a href="#">{{ i }}</a>
+        </div>
+    {% if forloop.counter|divisibleby:10 %}</div><div class="w3-row">{% endif %}
+    {% if forloop.last %}</div>{% endif %}
+{% endfor %}
+
+
+{% endblock %}
