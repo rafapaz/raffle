@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load mathfilters %}
 
 {% block title %}Home{% endblock %}
 
@@ -7,7 +8,9 @@
 Home!!
 <a href="{% url 'raffle_new' %}" >Nova Rifa</a> <br><br>
 {% for r in raffles %}
-<a href="{% url 'raffle_detail' r.id %}" > {{ r.title }} </a>  -  <a href="{% url 'raffle_edit' r.id %}" >Editar</a> <br>
+    <a href="{% url 'raffle_detail' r.id %}" > {{ r.title }} </a>
+     - {{ r.choices.count|div:r.qtd_num|mul:100 }} % preenchido 
+     -  <a href="{% url 'raffle_edit' r.id %}" >Editar</a> <br>
 {% endfor %}
 
 {% endblock %}

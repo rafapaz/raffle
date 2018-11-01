@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import RaffleForm
-from .models import Raffle
+from .models import Raffle, Choice
 import datetime
 
 
@@ -11,7 +11,7 @@ def index(request):
         return redirect('login')
 
     raffles = Raffle.objects.all()
-
+    # perc = {r.id: r.choices.count()/r.qtd_num for r in raffles}
     return render(request, 'rifa/index.html', {'raffles': raffles})
 
 
@@ -78,5 +78,19 @@ def raffle_edit(request, pk):
 
 def raffle_detail(request, pk):
     raffle = get_object_or_404(Raffle, pk=pk)
-    context = {'raffle': raffle, 'range': range(1, raffle.qtd_num + 1)}
+    choices = Choice.objects.filter(raffle=raffle)
+    choices_num = [c.number for c in choices]
+
+    context = {'raffle': raffle, 'range': range(1, raffle.qtd_num + 1), 'choices_num': choices_num}
     return render(request, 'rifa/raffle_detail.html', context)
+
+
+def choose(request, pk, num):
+    raffle = get_object_or_404(Raffle, pk=pk)
+    choice = Choice()
+    choice.user = request.user
+    choice.number = num
+    choice.date = datetime.datetime.now()
+    choice.raffle = raffle
+    choice.save()
+    return redirect('index')
