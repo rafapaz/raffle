@@ -1,8 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 from .forms import RaffleForm
-from .models import Raffle, Choice
+from .models import Raffle, Choice, Reputation
 import datetime
 
+
+# Aux functions
+
+def reputation(user):
+    reps = Reputation.objects.filter(user_to=user)
+    scores = [r.score for r in reps]
+    score = sum(scores) / float(len(scores))
+    return score
+
+
+# Views
 
 def index(request):
     if not request.user.is_authenticated:
@@ -52,8 +64,9 @@ def raffle_detail(request, pk):
     raffle = get_object_or_404(Raffle, pk=pk)
     choices = Choice.objects.filter(raffle=raffle)
     choices_num = [c.number for c in choices]
+    score = reputation(raffle.author)
 
-    context = {'raffle': raffle, 'range': range(1, raffle.qtd_num + 1), 'choices_num': choices_num}
+    context = {'raffle': raffle, 'range': range(1, raffle.qtd_num + 1), 'choices_num': choices_num, 'score': score}
     return render(request, 'rifa/raffle_detail.html', context)
 
 
@@ -66,3 +79,23 @@ def choose(request, pk, num):
     choice.raffle = raffle
     choice.save()
     return redirect('index')
+
+
+def rate(request, raffle_id, user_id):
+    raffle = get_object_or_404(Raffle, pk=raffle_id)
+    otherUser = get_object_or_404(User, pk=user_id)
+
+    if request.method == "POST":
+        score = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        rep = Reputation()
+        rep.user_from = request.user
+        rep.user_to = otherUser
+        rep.score = score
+        rep.raffle = raffle
+        rep.comment = comment
+        rep.save()
+        return redirect('index')
+    else:
+        context = {'raffle': raffle, 'otherUser': otherUser}
+        return render(request, 'rifa/rate.html', context)

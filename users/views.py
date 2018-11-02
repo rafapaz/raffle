@@ -3,12 +3,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 
+# Aux functions
+
 def my_authenticate(request, username, password):
     user = authenticate(username=username, password=password)
     if user is None:
         raise Exception('Cannot authenticate!')
     login(request, user)
 
+
+# Views
 
 def signup(request):
     try:

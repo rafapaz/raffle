@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'star.css' %}">
 
 <br>
 {{ msg }}
@@ -9,7 +10,15 @@
 <br>
 {{ raffle.category.name }} <br>
 {{ raffle.desc }} <br>
-Criado por <a href="{% url 'profile' raffle.author.id %}">{{ raffle.author.first_name }}</a> <br>
+Criado por <a href="{% url 'profile' raffle.author.id %}">{{ raffle.author.first_name }}</a>
+
+<span class="fa fa-star {% if score >= 1 %} checked {% endif %}"></span>
+<span class="fa fa-star {% if score >= 2 %} checked {% endif %}"></span>
+<span class="fa fa-star {% if score >= 3 %} checked {% endif %}"></span>
+<span class="fa fa-star {% if score >= 4 %} checked {% endif %}"></span>
+<span class="fa fa-star {% if score >= 5 %} checked {% endif %}"></span>
+
+<br>
 
 Escolha um número:
 {% for i in range %}

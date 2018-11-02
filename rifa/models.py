@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+
 def raffle_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/raffle_<id>/<filename>
     return 'raffle_{0}/{1}'.format(instance.raffle.id, filename)
@@ -52,6 +53,7 @@ class Reputation(models.Model):
     SCORES = [(i, i) for i in range(1, 6)]
     user_from = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='+')
     user_to = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='+')
+    raffle = models.ForeignKey(Raffle, on_delete=models.CASCADE, related_name='reputations')
     score = models.IntegerField(blank=False, null=False, choices=SCORES)
     comment = models.CharField(max_length=200, blank=True, null=True)
 
