@@ -10,7 +10,10 @@ Home!!
 {% for r in raffles %}
     <a href="{% url 'raffle_detail' r.id %}" > {{ r.title }} </a>
      - {{ r.choices.count|div:r.qtd_num|mul:100 }} % preenchido 
-     -  <a href="{% url 'raffle_edit' r.id %}" >Editar</a> <br>
+     {% if user.is_authenticated and user.id == r.author.id %}
+     -  <a href="{% url 'raffle_edit' r.id %}" >Editar</a> 
+     {% endif%}
+     <br>
 {% endfor %}
 
 {% endblock %}

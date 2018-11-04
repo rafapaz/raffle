@@ -17,7 +17,8 @@ def my_authenticate(request, username, password):
 def signup(request):
     try:
         if request.method == "POST":
-            User.objects.create_user(username=request.POST.get('username'),
+
+            User.objects.create_user(username=request.POST.get('email'),
                                             email=request.POST.get('email'),
                                             password=request.POST.get('psw'),
                                             first_name=request.POST.get('first_name'),
@@ -52,7 +53,7 @@ def my_login(request):
 
 def my_logout(request):
     logout(request)
-    return redirect('login')
+    return redirect('index')
 
 
 def profile(request, pk):

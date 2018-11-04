@@ -25,9 +25,15 @@ Escolha um número:
     {% if forloop.first %}<div class="w3-row">{% endif %}
     <div class="w3-col m1">
             {% if i not in choices_num %}
-                <a href="{% url 'choose' raffle.id i %}">{{ i }}</a>
+                <div class="w3-green">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'choose' raffle.id i %}">{{ i }}</a>
+                    {% else %}
+                        {{ i }}
+                    {% endif %}
+                </div>
             {% else %}
-                {{ i }}
+                <div class="w3-red">{{ i }}</div>
             {% endif %}
         </div>
     {% if forloop.counter|divisibleby:10 %}</div><div class="w3-row">{% endif %}

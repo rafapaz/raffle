@@ -17,8 +17,6 @@ def reputation(user):
 # Views
 
 def index(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
 
     raffles = Raffle.objects.all()
     # perc = {r.id: r.choices.count()/r.qtd_num for r in raffles}
@@ -44,6 +42,9 @@ def raffle_new(request):
 
 
 def raffle_edit(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+        
     raffle = get_object_or_404(Raffle, pk=pk)
     if request.method == "POST":
         form = RaffleForm(request.POST, instance=raffle)
