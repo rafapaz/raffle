@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import RaffleForm
-from .models import Raffle, Choice, Reputation
+from .models import Raffle, Choice, Reputation, Question
 import datetime
 
 
@@ -44,7 +44,7 @@ def raffle_new(request):
 def raffle_edit(request, pk):
     if not request.user.is_authenticated:
         return redirect('login')
-        
+
     raffle = get_object_or_404(Raffle, pk=pk)
     if request.method == "POST":
         form = RaffleForm(request.POST, instance=raffle)
@@ -71,8 +71,8 @@ def raffle_detail(request, pk):
     return render(request, 'rifa/raffle_detail.html', context)
 
 
-def choose(request, pk, num):
-    raffle = get_object_or_404(Raffle, pk=pk)
+def choose(request, raffle_id, num):
+    raffle = get_object_or_404(Raffle, pk=raffle_id)
     choice = Choice()
     choice.user = request.user
     choice.number = num
@@ -100,3 +100,34 @@ def rate(request, raffle_id, user_id):
     else:
         context = {'raffle': raffle, 'otherUser': otherUser}
         return render(request, 'rifa/rate.html', context)
+
+
+def ask(request, raffle_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    raffle = get_object_or_404(Raffle, pk=raffle_id)
+
+    if request.method == "POST":
+        question = Question()
+        question.question = request.POST.get('question')
+        question.raffle = raffle
+        question.user = request.user
+        question.save()
+        return redirect('raffle_detail', raffle.id)
+    else:
+        return redirect('index')
+
+
+def answer(request, question_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    question = get_object_or_404(Question, pk=question_id)
+
+    if request.method == "POST":
+        question.answer = request.POST.get('answer')
+        question.save()
+        return redirect('raffle_detail', question.raffle.id)
+    else:
+        return redirect('index')

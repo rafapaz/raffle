@@ -59,3 +59,10 @@ class Reputation(models.Model):
 
     def __str__(self):
         return self.user_from.username + ' -> ' + self.user_to.username
+
+
+class Question(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='+')
+    raffle = models.ForeignKey(Raffle, on_delete=models.CASCADE, related_name='questions')
+    question = models.CharField(max_length=200, blank=False, null=False)
+    answer = models.CharField(max_length=200, blank=True, null=True)

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% load static %}
+
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'star.css' %}">
+
 
 <br>
 {{ msg }}
@@ -40,5 +40,27 @@ Escolha um número:
     {% if forloop.last %}</div>{% endif %}
 {% endfor %}
 
+<br>
+
+Pergunte ao autor da rifa:
+<form  method="POST" action="{% url 'ask' raffle.id  %}">
+    {% csrf_token %}
+    <input type="text" name="question" /> <button type="submit">Perguntar</button>
+</form>
+<br>
+
+{% for q in raffle.questions.all %}
+    {{q.user.first_name}} perguntou: <br> 
+    {{q.question}} <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    {% if raffle.author == user and q.answer is None %}
+        <form  method="POST" action="{% url 'answer' q.id  %}">
+            {% csrf_token %}
+            <input type="text" name="answer" /> <button type="submit">Responder</button>
+        </form>
+    {% endif %}
+    {{q.answer|default:""}}
+    <br><br>
+{% endfor %}
 
 {% endblock %}

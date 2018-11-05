@@ -5,9 +5,29 @@
 
 <br>
 
-<h1>Usuário {{ someUser.first_name }} {{ someUser.last_name }}</h1>
-<br>
-{{ someUser.email }} <br>
+<h1>
+    {{ someUser.first_name }} {{ someUser.last_name }} 
+    <span class="fa fa-star {% if score >= 1 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if score >= 2 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if score >= 3 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if score >= 4 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if score >= 5 %} checked {% endif %}"></span>
+</h1>
+{{ someUser.email }} <br><br>
+
+{% for rep in reputations %}
+{{rep.user_from.first_name}} avaliou: 
+
+    <span class="fa fa-star {% if rep.score >= 1 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if rep.score >= 2 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if rep.score >= 3 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if rep.score >= 4 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if rep.score >= 5 %} checked {% endif %}"></span>
+
+    <br>
+    Comentário: {{rep.comment}}
+    <br><br>
+{% endfor %}
 
 
 {% endblock %}

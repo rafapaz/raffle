@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from rifa.models import Reputation
+from rifa.views import reputation
 
 
 # Aux functions
@@ -58,4 +60,6 @@ def my_logout(request):
 
 def profile(request, pk):
     someUser = get_object_or_404(User, pk=pk)
-    return render(request, 'users/user_detail.html', {'someUser': someUser})
+    reps = Reputation.objects.filter(user_to=someUser)
+    score = reputation(someUser)
+    return render(request, 'users/user_detail.html', {'someUser': someUser, 'reputations': reps, 'score': score})
