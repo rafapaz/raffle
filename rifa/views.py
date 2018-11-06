@@ -36,8 +36,9 @@ def raffle_new(request):
             raffle.pub_date = datetime.datetime.now()
             raffle.save()
             return redirect('raffle_image', raffle.id)
+    else:
+        form = RaffleForm()
 
-    form = RaffleForm()
     return render(request, 'rifa/raffle_edit.html', {'form': form, 'msg': form.errors})
 
 

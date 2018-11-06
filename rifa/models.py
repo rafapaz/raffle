@@ -17,14 +17,14 @@ class Category(models.Model):
 
 class Raffle(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    title = models.CharField(max_length=100, blank=False, null=False)
-    desc = models.CharField(max_length=500, blank=False, null=False)
-    pub_date = models.DateTimeField('publish date')
-    qtd_num = models.IntegerField(blank=False, null=False)
-    value = models.FloatField(blank=False, null=False)
-    limit_date = models.DateTimeField('limit date')
-    choosed_num = models.IntegerField(blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Título')
+    desc = models.CharField(max_length=500, blank=False, null=False, verbose_name='Descrição')
+    pub_date = models.DateTimeField(verbose_name='Publicado em')
+    qtd_num = models.IntegerField(blank=False, null=False, verbose_name='Quantidade de números')
+    value = models.FloatField(blank=False, null=False, verbose_name='Valor unitário')
+    limit_date = models.DateTimeField(verbose_name='Data do sorteio')
+    choosed_num = models.IntegerField(blank=True, null=True, verbose_name='Número sorteado')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Categoria')
 
     def __str__(self):
         return self.title

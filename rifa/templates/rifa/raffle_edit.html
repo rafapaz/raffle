@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
-
 {% block content %}
 
 <br>
-{{ msg }}
+<div class="w3-red">{{ msg }}</div>
 <h1>Nova Rifa</h1>
 <form  method="POST" >
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_p }}    
     <button type="submit" class="w3-button">Save</button>
 </form>
 
