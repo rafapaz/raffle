@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<br>
+
+<h1>Imagens da rifa: {{raffle.title}}</h1>
+<form action="{% url 'raffle_image' raffle.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    Escolha as imagens: <input type="file" name="img" multiple>
+    <button type="submit" class="w3-button">Save</button>
+</form>
+
+<div class="w3-row-padding w3-margin-top">
+    {% for img in raffle.images.all %}
+        <div class="w3-third">
+            <div class="w3-card">
+              <img src="{{ img.img.url }}" style="width:50%">
+              <div class="w3-container">
+                <h5>.</h5>
+              </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import RaffleForm
-from .models import Raffle, Choice, Reputation, Question
+from .models import Raffle, Choice, Reputation, Question, Image
 import datetime
 
 
@@ -35,7 +35,7 @@ def raffle_new(request):
             raffle.author = request.user
             raffle.pub_date = datetime.datetime.now()
             raffle.save()
-            return redirect('index')
+            return redirect('raffle_image', raffle.id)
 
     form = RaffleForm()
     return render(request, 'rifa/raffle_edit.html', {'form': form, 'msg': form.errors})
@@ -62,13 +62,27 @@ def raffle_edit(request, pk):
 
 
 def raffle_detail(request, pk):
-    raffle = get_object_or_404(Raffle, pk=pk)
-    choices = Choice.objects.filter(raffle=raffle)
-    choices_num = [c.number for c in choices]
+    raffle = get_object_or_404(Raffle, pk=pk)    
+    choices_num = [c.number for c in raffle.choices.all()]
     score = reputation(raffle.author)
 
     context = {'raffle': raffle, 'range': range(1, raffle.qtd_num + 1), 'choices_num': choices_num, 'score': score}
     return render(request, 'rifa/raffle_detail.html', context)
+
+
+def raffle_image(request, raffle_id):
+    raffle = get_object_or_404(Raffle, pk=raffle_id)
+    context = {'raffle': raffle}
+
+    if request.method == "POST":
+        files = request.FILES.getlist('img')
+        for f in files:
+            image = Image()
+            image.raffle = raffle
+            image.img = f
+            image.save()
+
+    return render(request, 'rifa/raffle_image.html', context)
 
 
 def choose(request, raffle_id, num):
@@ -97,9 +111,9 @@ def rate(request, raffle_id, user_id):
         rep.comment = comment
         rep.save()
         return redirect('index')
-    else:
-        context = {'raffle': raffle, 'otherUser': otherUser}
-        return render(request, 'rifa/rate.html', context)
+    
+    context = {'raffle': raffle, 'otherUser': otherUser}
+    return render(request, 'rifa/rate.html', context)
 
 
 def ask(request, raffle_id):
@@ -115,8 +129,8 @@ def ask(request, raffle_id):
         question.user = request.user
         question.save()
         return redirect('raffle_detail', raffle.id)
-    else:
-        return redirect('index')
+    
+    return redirect('index')
 
 
 def answer(request, question_id):
@@ -129,5 +143,5 @@ def answer(request, question_id):
         question.answer = request.POST.get('answer')
         question.save()
         return redirect('raffle_detail', question.raffle.id)
-    else:
-        return redirect('index')
+    
+    return redirect('index')

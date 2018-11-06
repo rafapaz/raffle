@@ -43,10 +43,10 @@ class Choice(models.Model):
 class Image(models.Model):
     img = models.ImageField(upload_to=raffle_directory_path)
     raffle = models.ForeignKey(Raffle, on_delete=models.CASCADE, related_name='images')
-    main = models.BooleanField(default=True)
+    main = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.img + ' / ' + self.raffle.title
+        return str(self.img) + ' / ' + self.raffle.title
 
 
 class Reputation(models.Model):
