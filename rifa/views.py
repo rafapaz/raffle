@@ -86,6 +86,25 @@ def raffle_image(request, raffle_id):
     return render(request, 'rifa/raffle_image.html', context)
 
 
+def raffle_edit_image(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == "POST":
+        image_id = request.POST.get('main')
+        image = get_object_or_404(Image, pk=image_id)
+        all_images = image.raffle.images.all()
+        for img in all_images:
+            img.main = False
+            img.save()
+
+        image.main = True
+        image.save()
+        return redirect('raffle_image', image.raffle.id)
+
+    return redirect('index')
+
+
 def choose(request, raffle_id, num):
     raffle = get_object_or_404(Raffle, pk=raffle_id)
     choice = Choice()

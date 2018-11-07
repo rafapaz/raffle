@@ -11,4 +11,5 @@ urlpatterns = [
     path('rifa/ask/<int:raffle_id>/', views.ask, name='ask'),
     path('rifa/answer/<int:question_id>/', views.answer, name='answer'),
     path('rifa/image/<int:raffle_id>/', views.raffle_image, name='raffle_image'),
+    path('rifa/image/edit/', views.raffle_edit_image, name='raffle_edit_image'),
 ]

@@ -12,18 +12,21 @@
     <button type="submit" class="w3-button">Save</button>
 </form>
 
-<div class="w3-row-padding w3-margin-top">
-    {% for img in raffle.images.all %}
-        <div class="w3-third">
-            <div class="w3-card w3-center">
-              <img src="{{ img.img.url }}" style="width:100px">
-              <div class="w3-container">
-                <h5>.</h5>
-              </div>
+<form action="{% url 'raffle_edit_image' %}" method="POST" >
+    {% csrf_token %}
+    <div class="w3-row-padding w3-margin-top">
+        {% for img in raffle.images.all %}
+            <div class="w3-third">
+                <div class="w3-card w3-center">
+                <img src="{{ img.img.url }}" style="width:100px">
+                <div class="w3-container">                    
+                    <h5><input type="radio" name="main" value="{{img.id}}" {% if img.main == True %}checked{% endif %}> Principal</h5>
+                </div>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
-
+        {% endfor %}
+    </div>
+    <button type="submit" class="w3-button">Alterar</button>
+</form>
 
 {% endblock %}
