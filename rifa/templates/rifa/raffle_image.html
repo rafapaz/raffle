@@ -20,7 +20,7 @@
                 <div class="w3-card w3-center">
                 <img src="{{ img.img.url }}" style="width:100px">
                 <div class="w3-container">                    
-                    <h5><input type="radio" name="main" value="{{img.id}}" {% if img.main == True %}checked{% endif %}> Principal</h5>
+                    <h5><input type="radio" name="main" value="{{img.id}}" {% if img.main %}checked{% endif %}> Principal</h5>
                 </div>
                 </div>
             </div>
