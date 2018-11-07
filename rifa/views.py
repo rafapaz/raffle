@@ -92,6 +92,7 @@ def raffle_edit_image(request):
 
     if request.method == "POST":
         image_id = request.POST.get('main')
+        ids_remov = request.POST.getlist('delete')
         image = get_object_or_404(Image, pk=image_id)
         all_images = image.raffle.images.all()
         for img in all_images:
@@ -100,6 +101,10 @@ def raffle_edit_image(request):
 
         image.main = True
         image.save()
+
+        for id in ids_remov:
+            Image.objects.filter(id=id).delete()
+
         return redirect('raffle_image', image.raffle.id)
 
     return redirect('index')
