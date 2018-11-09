@@ -8,10 +8,13 @@ import datetime
 # Aux functions
 
 def reputation(user):
-    reps = Reputation.objects.filter(user_to=user)
-    scores = [r.score for r in reps]
-    score = sum(scores) / float(len(scores))
-    return score
+    try:
+        reps = Reputation.objects.filter(user_to=user)
+        scores = [r.score for r in reps]
+        score = sum(scores) / float(len(scores))
+        return score
+    except Exception:
+        return 0
 
 
 # Views

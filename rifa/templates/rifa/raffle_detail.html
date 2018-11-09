@@ -30,6 +30,7 @@ Criado por <a href="{% url 'profile' raffle.author.id %}">{{ raffle.author.first
     {% endfor %}
 </div>
 
+{% if raffle.images.all|length > 0 %}
 <div class="w3-center">
     <div class="w3-section">
         <button class="w3-button w3-light-grey" onclick="plusDivs(-1)">❮ Prev</button>
@@ -39,6 +40,7 @@ Criado por <a href="{% url 'profile' raffle.author.id %}">{{ raffle.author.first
         <button class="w3-button demo" onclick="currentDiv({{ forloop.counter }})">{{ forloop.counter }}</button> 
     {% endfor %}
 </div>
+{% endif %}
       
 
 <br>
