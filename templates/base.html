@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'star.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'slide.css' %}">
+    
 
     <title>{% block title %}e-Rifa{% endblock %}</title>
 </head>
@@ -25,5 +27,7 @@
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+
+    <script src="{% static 'slide.js' %}"></script>
 </body>
 </html>

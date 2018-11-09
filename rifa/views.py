@@ -72,7 +72,13 @@ def raffle_detail(request, pk):
 
 
 def raffle_image(request, raffle_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     raffle = get_object_or_404(Raffle, pk=raffle_id)
+    if raffle.author != request.user:
+        return redirect('index')
+
     context = {'raffle': raffle}
 
     if request.method == "POST":
@@ -94,6 +100,10 @@ def raffle_edit_image(request):
         image_id = request.POST.get('main')
         ids_remov = request.POST.getlist('delete')
         image = get_object_or_404(Image, pk=image_id)
+
+        if image.raffle.author != request.user:
+            return redirect('index')
+
         all_images = image.raffle.images.all()
         for img in all_images:
             img.main = False
@@ -163,6 +173,8 @@ def answer(request, question_id):
         return redirect('login')
 
     question = get_object_or_404(Question, pk=question_id)
+    if question.raffle.author != request.user:
+        return redirect('index')
 
     if request.method == "POST":
         question.answer = request.POST.get('answer')

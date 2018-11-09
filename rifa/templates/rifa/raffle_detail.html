@@ -19,7 +19,29 @@ Criado por <a href="{% url 'profile' raffle.author.id %}">{{ raffle.author.first
 <span class="fa fa-star {% if score >= 5 %} checked {% endif %}"></span>
 
 <br>
+{% if user.is_authenticated and user == raffle.author %}
+    <a href="{% url 'raffle_image' raffle.id %}" >Editar imagens</a>
+    <br>
+{% endif %}
 
+<div class="w3-content w3-center" style="max-width:300px">
+    {% for img in raffle.images.all %}
+        <img class="mySlides" src="{{ img.img.url }}" style="width:300px">
+    {% endfor %}
+</div>
+
+<div class="w3-center">
+    <div class="w3-section">
+        <button class="w3-button w3-light-grey" onclick="plusDivs(-1)">❮ Prev</button>
+        <button class="w3-button w3-light-grey" onclick="plusDivs(1)">Next ❯</button>
+    </div>
+    {% for img in raffle.images.all %}
+        <button class="w3-button demo" onclick="currentDiv({{ forloop.counter }})">{{ forloop.counter }}</button> 
+    {% endfor %}
+</div>
+      
+
+<br>
 Escolha um número:
 {% for i in range %}
     {% if forloop.first %}<div class="w3-row">{% endif %}
